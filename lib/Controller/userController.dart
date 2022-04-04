@@ -39,7 +39,7 @@ class UserController extends GetxController {
 
   UserModel get userT => usermodel.value;
   FirebaseAuth auth = FirebaseAuth.instance;
-  Rx<User> firbaseUser = Rx<User>();
+  Rxn<User> firbaseUser = Rxn<User>();
 
   String get users => firbaseUser.value?.email;
 
@@ -57,6 +57,11 @@ class UserController extends GetxController {
   void getUser() async {
     user = await MyDatabase().getUser(firbaseUser.value.uid);
   }
+
+  void getUserById() async {
+    user = await MyDatabase().getUser(firbaseUser.value.uid);
+  }
+
 
   Stream<UserModel> getUserStream() {
     return firebaseFirestore

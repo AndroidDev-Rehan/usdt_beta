@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-//import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:usdt_beta/Binding/binding.dart';
 import 'package:usdt_beta/UI/AuthScreen/splash_screen.dart';

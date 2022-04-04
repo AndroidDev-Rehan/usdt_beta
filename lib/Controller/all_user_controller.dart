@@ -3,18 +3,18 @@ import 'package:get/get.dart';
 import 'package:usdt_beta/Model/user_model.dart';
 
 class AllUserController extends GetxController {
-  Rx<List<UserModel>> allUserList = Rx<List<UserModel>>();
+  Rxn<List<UserModel>> allUserList = Rxn<List<UserModel>>();
 
   List<UserModel> get allUser => allUserList.value;
 
-  Rx<List<UserModel>> allUserListT = Rx<List<UserModel>>();
+  Rxn<List<UserModel>> allUserListT = Rxn<List<UserModel>>();
 
-  Rx<List<UserModel>> allUserListTCoinbase = Rx<List<UserModel>>();
-  Rx<List<UserModel>> allUserListTAmazon = Rx<List<UserModel>>();
-  Rx<List<UserModel>> allUserListTLite = Rx<List<UserModel>>();
-  Rx<List<UserModel>> allUserListTGold = Rx<List<UserModel>>();
-  Rx<List<UserModel>> allUserListTSilver = Rx<List<UserModel>>();
-  Rx<List<UserModel>> allUserListTOil = Rx<List<UserModel>>();
+  Rxn<List<UserModel>> allUserListTCoinbase = Rxn<List<UserModel>>();
+  Rxn<List<UserModel>> allUserListTAmazon = Rxn<List<UserModel>>();
+  Rxn<List<UserModel>> allUserListTLite = Rxn<List<UserModel>>();
+  Rxn<List<UserModel>> allUserListTGold = Rxn<List<UserModel>>();
+  Rxn<List<UserModel>> allUserListTSilver = Rxn<List<UserModel>>();
+  Rxn<List<UserModel>> allUserListTOil = Rxn<List<UserModel>>();
 
   List<UserModel> get allUserT => allUserListT.value;
 

@@ -4,9 +4,9 @@ import 'package:usdt_beta/Controller/userController.dart';
 import 'package:usdt_beta/Model/referal_model.dart';
 
 class ReferalController extends GetxController {
-  Rx<List<ReferalModel>> referalList = Rx<List<ReferalModel>>();
+  Rxn<List<ReferalModel>> referalList = Rxn<List<ReferalModel>>();
   List<ReferalModel> get referal => referalList.value;
-  Rx<List<ReferalModel>> referalList1 = Rx<List<ReferalModel>>();
+  Rxn<List<ReferalModel>> referalList1 = Rxn<List<ReferalModel>>();
   List<ReferalModel> get referal1 => referalList1.value;
 
   var firebaseFirestore = FirebaseFirestore.instance;

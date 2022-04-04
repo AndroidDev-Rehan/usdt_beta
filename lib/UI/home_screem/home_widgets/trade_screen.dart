@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:math';
-import 'package:chart_sparkline/chart_sparkline.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_k_chart/entity/k_line_entity.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:usdt_beta/Controller/LiveTradeController.dart';
@@ -49,7 +45,7 @@ class _TradeScreenState extends State<TradeScreen> {
   //syncfusion graph
 
   bool isCardView = false;
-  Rx<Timer> tradeTimer = Rx();
+  Rx<Timer> tradeTimer = Rxn();
   list() {
     chartData = <ChartSampleData>[
       ChartSampleData(

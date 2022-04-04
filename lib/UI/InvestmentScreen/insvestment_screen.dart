@@ -1,20 +1,22 @@
 import 'dart:convert';
-import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart' as pathLibrary;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:usdt_beta/Services/database.dart';
-import 'package:usdt_beta/UI/DepositWithDrawScreen/DWWidgets/deposit_widget.dart';
+import 'package:usdt_beta/Controller/userController.dart';
+import 'package:usdt_beta/Model/deposit_request_model.dart';
+import 'package:usdt_beta/UI/InvestmentScreen/request_pending_screen.dart';
+import 'package:usdt_beta/UI/InvestmentScreen/widgets/upload_document.dart';
 import 'package:usdt_beta/Widgets/auth_button.dart';
 import 'package:usdt_beta/sizeConfig.dart';
 import 'package:usdt_beta/style/color.dart';
 import 'package:http/http.dart' as http;
 
-import 'payment_screen.dart';
+String downloadURL;
 
 class InvestmentScreen extends StatefulWidget {
   const InvestmentScreen({
@@ -164,6 +166,8 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
   //   return Currency.fromJson(jsonDecode(res.body));
   // }
 
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,23 +177,44 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
         backgroundColor: bgColorLight,
         title: Text('Deposit'),
       ),
-      body: SingleChildScrollView(
+      body:
+      loading ? Center(child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text("Please wait processing your request ...", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+            CircularProgressIndicator(),
+          ],
+        ),
+      ),)
+      : SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+//            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                child: Text('Select Amount to deposit',
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
-              ),
-              Center(
-                child: Wrap(
-                  children: _buildChoiceList(),
-                ),
-              ),
+              // SizedBox(height: 30,),
+              // NumberTextField(title: "EasyPaisa / JazzCash: ",),
+              // NumberTextField(title: "JazzCash: ",),
+              NumberTextField(title: "Bank: ",bank: true,),
+              NumberTextField(title: "Skrill: ",),
+              NumberTextField(title: "Vault Address: ",),
+
+
+
+
+              // Padding(
+              //   padding:
+              //   const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              //   child: Text('Select Amount to deposit',
+              //       style: TextStyle(color: Colors.white, fontSize: 20)),
+              // ),
+              // Center(
+              //   child: Wrap(
+              //     children: _buildChoiceList(),
+              //   ),
+              // ),
               // Padding(
               //   padding: const EdgeInsets.all(10.0),
               //   child: Text('Or enter another Amount',
@@ -297,31 +322,57 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
+                child: UploadDocument(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: AuthButton(
                     label: 'Pay Now',
                     // on click go to payment options with the amount selected:
-                    onTap: () {
+                    onTap: () async{
                       if (_key.currentState.validate()) {
-                        final String am = investController.text;
-                        var calc = double.parse(am);
-                        //Currency rate;
-                        //getExchangeRate().then((value) => rate = value);
+                        if(pdfFile!=null){
+                          setState(() {
+                            loading = true;
+                          });
+                          bool status = await uploadFileAndGetLink();
+                          if(status){
+                            Get.off(()=>RequestPendingScreen());
+                            loading = false;
+                            pdfFile = null;
+                          }
+                          else {
+                            setState(() {
+                              loading = false;
+                            });
+                          }
 
-                        var amount = calc * 185;
-                        Get.to(
-                            PaymentScreen(amount: amount.toInt().toString()));
-                        // print('Amount ${int.parse(investController.text)}');
-                        // makePayment();
-                        //MyDatabase().updateInvestmentAmount(
-                        //  int.parse(investController.text));
 
-                        //FocusScope.of(context).requestFocus(FocusNode());
-                        //Get.to(DepositWidget());
-                        // Fluttertoast.showToast(
-                        //     msg:
-                        //         'You are eligible for investment proceed further');
-                        //investController.clear();
+
+                          // final String am = investController.text;
+                          // var calc = double.parse(am);
+                          // //Currency rate;
+                          // //getExchangeRate().then((value) => rate = value);
+                          //
+                          // var amount = calc * 185;
+                          // Get.to(
+                          //     PaymentScreen(amount: amount.toInt().toString()));
+                          // // print('Amount ${int.parse(investController.text)}');
+                          // // makePayment();
+                          // //MyDatabase().updateInvestmentAmount(
+                          // //  int.parse(investController.text));
+                          //
+                          // //FocusScope.of(context).requestFocus(FocusNode());
+                          // //Get.to(DepositWidget());
+                          // // Fluttertoast.showToast(
+                          // //     msg:
+                          // //         'You are eligible for investment proceed further');
+                          // //investController.clear();
+                        }
+                        else{
+                          Get.snackbar("Error", "Verification Document Missing",snackPosition: SnackPosition.BOTTOM, colorText: Colors.white);
+                        }
                       }
                     },
                   ),
@@ -346,6 +397,39 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
     // Future<PaymentMethod> createPaymentMethod(){
     //   return
     // };
+  }
+
+  Future<bool> uploadFileAndGetLink() async {
+    try{
+
+      final String dateRef = DateTime.now().toString();
+
+      UserController userController = Get.find();
+      await uploadFile();
+      downloadURL = await firebase_storage.FirebaseStorage.instance
+          .ref(pathLibrary.basename(pdfFile.path)).getDownloadURL();
+      await FirebaseFirestore.instance.collection("DepositRequests").doc("${userController
+          .usermodel.value.uid} $dateRef").set(DepositRequest(userId: userController.usermodel.value.uid, amount: double.parse(investController.text), documentLink: downloadURL,userMail: userController.usermodel.value.email, userName: userController.usermodel.value.name,
+          depositId: "${userController.usermodel.value.uid} $dateRef").toMap());
+      return true;
+    }
+    catch(e){
+      Get.snackbar("Error", e.toString());
+      return false;
+    }
+//    return downloadURL;
+    // Within your widgets:
+    // Image.network(downloadURL);
+  }
+
+  Future<void> uploadFile() async {
+    try {
+      await firebase_storage.FirebaseStorage.instance
+          .ref(pathLibrary.basename(pdfFile.path)).putFile(pdfFile);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+      // e.g, e.code == 'canceled'
+    }
   }
 
   void makeJazzCashPayment() async {
@@ -482,4 +566,117 @@ class PaymentResponse {
 
   //class constructor
   PaymentResponse({this.message, this.success});
+}
+
+class NumberTextField extends StatelessWidget {
+  String title;
+  String text;
+  bool bank;
+  NumberTextField({this.title, this.text,this.bank});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+            padding: EdgeInsets.only(
+                left: 25.0,
+                right: 25.0,
+                top: 25.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment:
+                  MainAxisAlignment.start,
+                  mainAxisSize:
+                  MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      (bank!=null) ?
+                      "$title ##########" : "$title",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                          fontWeight:
+                          FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+        (bank!=null) ?
+        Padding(
+            padding: EdgeInsets.only(
+                left: 25.0,
+                right: 25.0,
+                top: 15.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment:
+                  MainAxisAlignment.start,
+                  mainAxisSize:
+                  MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "##########",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                          fontWeight:
+                          FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            )) : SizedBox(height: 0,),
+        Padding(
+            padding: EdgeInsets.only(
+                left: 25.0,
+                right: 25.0,
+                top: 2.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Flexible(
+                  child: new TextField(
+                    readOnly: true,
+                    style: TextStyle(
+                        color: Colors.white),
+                    decoration: InputDecoration(
+                        focusedBorder:
+                        UnderlineInputBorder(),
+                        hintText:
+                            text ??
+                        "############",
+                        hintStyle: TextStyle(
+                            color:
+                            Colors.white)),
+                    enabled: false,
+                  ),
+                ),
+                InkWell(
+                    onTap: () {
+                      Clipboard.setData(
+                          ClipboardData(
+                              text:
+                                  text ??
+                              "############"))
+                          .then((value) =>
+                          Get.snackbar(
+                              'Success',
+                              'Number copied'));
+                    },
+                    child: Icon(Icons.copy_all,
+                        color: Colors.white))
+              ],
+            )),
+
+      ],
+    );
+  }
 }

@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:usdt_beta/AdminScreen/Widgets/user_detail_widget.dart';
-import 'package:usdt_beta/AdminScreen/copy_trade_coinbase_global.dart';
+import 'package:usdt_beta/AdminScreen/Widgets/withdraw_request_widget.dart';
+import 'package:usdt_beta/AdminScreen/all_deposit_requests_page.dart';
+import 'package:usdt_beta/AdminScreen/all_withdraw_request.dart';
 import 'package:usdt_beta/Controller/all_user_controller.dart';
 import 'package:usdt_beta/Controller/referal_controller.dart';
 import 'package:usdt_beta/UI/AuthScreen/login_screen.dart';
@@ -138,6 +140,20 @@ class MyDrawer extends StatelessWidget {
           leading: const Icon(CupertinoIcons.graph_circle_fill),
           onTap: () {
             Get.to(CopyTradeAdminHome());
+          },
+        ),
+        ListTile(
+          title: const Text('Deposit Requests'),
+          leading: const Icon(CupertinoIcons.money_dollar),
+          onTap: () {
+            Get.to(AllDepositRequests());
+          },
+        ),
+        ListTile(
+          title: const Text('Withdraw Requests'),
+          leading: const Icon(CupertinoIcons.arrow_counterclockwise),
+          onTap: () {
+            Get.to(AllWithDrawRequests());
           },
         ),
         // ListTile(

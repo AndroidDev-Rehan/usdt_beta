@@ -48,7 +48,7 @@ class UserModel {
     cTrade = snapshot.data()['cTrade'] ?? false;
     rTrade = snapshot.data()['rTrade'] ?? false;
     uid = snapshot.data()['uid'] ?? "";
-    investmentAmount = snapshot.data()['investmentAmount'] ?? 0.0;
+    investmentAmount = double.parse(snapshot.data()['investmentAmount'].toString()) ?? 0.0;
     refId = snapshot.data()['refId'] ?? "";
     timeCreated = snapshot.data()['timeCreated'] ?? "";
     userImage = snapshot.data()['userImage'] ?? "";
