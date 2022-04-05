@@ -198,8 +198,8 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
               // NumberTextField(title: "EasyPaisa / JazzCash: ",),
               // NumberTextField(title: "JazzCash: ",),
               NumberTextField(title: "Bank: ",bank: true,),
-              NumberTextField(title: "Skrill: ",),
-              NumberTextField(title: "Vault Address: ",),
+              NumberTextField(title: "Skrill: ", text: "mastertrader400@gmail.com",),
+              NumberTextField(title: "Vault Address: ", text: "0x18bcb74ED66Fe70a14879fBb64CB1cF7742A5235",),
 
 
 

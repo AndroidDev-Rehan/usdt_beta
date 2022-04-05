@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: FutureBuilder(
-        future: booleanCheckCoinBase(),
+        future: boolAll(),
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.waiting)
             return Center(
@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white)),
                       ),
-                      Obx(() => Flexible(
+                      Flexible(
                           child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
@@ -136,8 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                       width: SizeConfig.screenWidth * 0.03),
                                   CurrencyCard(
-                                    color: coinBaseN
-                                        // adminController.variablesModel.isCoinbase?.value == true
+                                    color: xCoinBase
+                                    // coinBaseN
+                                    // adminController.variablesModel.isCoinbase?.value == true
                                         ? Colors.red
                                         : Colors.grey,
                                     onTap: () {
@@ -146,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .getCountDownTime('rCoinbase')
                                             .then((value) {
                                           final startAt =
-                                              value.startAt.toDate();
+                                          value.startAt.toDate();
                                           final now = DateTime.now();
 
                                           final difference =
@@ -157,15 +158,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (seconds.value < maxTime &&
                                               seconds.value > 0) {
                                             adminController.variablesModel
-                                                        .isCoinbase?.value ==
-                                                    true
+                                                .isCoinbase?.value ==
+                                                true
                                                 ? Get.to(CopyTradeScreen(
-                                                    title: 'Coinbase',
-                                                    commodityType: 'rCoinbase',
-                                                    endTime: seconds.value,
-                                                  ))
+                                              title: 'Coinbase',
+                                              commodityType: 'rCoinbase',
+                                              endTime: seconds.value,
+                                            ))
                                                 : Get.snackbar('Alert',
-                                                    'This will be start by admin');
+                                                'This will be start by admin');
                                           }
                                           isLoading = false;
                                         });
@@ -180,9 +181,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   CurrencyCard(
                                     ///TODO CHECKING IF AMAZON TRADE IS TURNED ON
                                     ///REMOVE TRUE AND CHECK
-                                    color: adminController.variablesModel
-                                                .isAmazon?.value ==
-                                            true
+                                    color: xAmazon
+                                    // adminController.variablesModel
+                                    //             .isAmazon?.value ==
+                                    //         true
                                         ? Colors.red
                                         : Colors.grey,
                                     onTap: () {
@@ -191,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .getCountDownTime('rAmazon')
                                             .then((value) {
                                           final startAt =
-                                              value.startAt.toDate();
+                                          value.startAt.toDate();
                                           final now = DateTime.now();
 
                                           final difference =
@@ -202,15 +204,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (seconds.value < maxTime &&
                                               seconds.value > 0) {
                                             adminController.variablesModel
-                                                        .isAmazon?.value ==
-                                                    true
+                                                .isAmazon?.value ==
+                                                true
                                                 ? Get.to(CopyTradeScreen(
-                                                    title: 'Amazon',
-                                                    commodityType: 'rAmazon',
-                                                    endTime: seconds.value,
-                                                  ))
+                                              title: 'Amazon',
+                                              commodityType: 'rAmazon',
+                                              endTime: seconds.value,
+                                            ))
                                                 : Get.snackbar('Alert',
-                                                    'This will be start by admin');
+                                                'This will be start by admin');
                                           }
                                           isLoading = false;
                                         });
@@ -223,8 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                       width: SizeConfig.screenWidth * 0.03),
                                   CurrencyCard(
-                                    color: booleanCheckLiteCoin()
-                                        // adminController.variablesModel.isLite?.value == true
+                                    color: xLiteCoin
+                                    // adminController.variablesModel.isLite?.value == true
                                         ? Colors.red
                                         : Colors.grey,
                                     onTap: () {
@@ -233,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .getCountDownTime('rLiteCoin')
                                             .then((value) {
                                           final startAt =
-                                              value.startAt.toDate();
+                                          value.startAt.toDate();
                                           final now = DateTime.now();
 
                                           final difference =
@@ -244,15 +246,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (seconds.value < maxTime &&
                                               seconds.value > 0) {
                                             adminController.variablesModel
-                                                        .isLite?.value ==
-                                                    true
+                                                .isLite?.value ==
+                                                true
                                                 ? Get.to(CopyTradeScreen(
-                                                    title: 'Lite',
-                                                    commodityType: 'rLiteCoin',
-                                                    endTime: seconds.value,
-                                                  ))
+                                              title: 'Lite',
+                                              commodityType: 'rLiteCoin',
+                                              endTime: seconds.value,
+                                            ))
                                                 : Get.snackbar('Alert',
-                                                    'This will be start by admin');
+                                                'This will be start by admin');
                                           }
                                           isLoading = false;
                                         });
@@ -268,9 +270,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                       width: SizeConfig.screenWidth * 0.03),
                                   CurrencyCard(
-                                    color: adminController
-                                                .variablesModel.isGold?.value ==
-                                            true
+                                    color: xGold
+                                    // adminController.variablesModel.isGold?.value ==  true
                                         ? Colors.red
                                         : Colors.grey,
                                     onTap: () {
@@ -279,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .getCountDownTime('rGold')
                                             .then((value) {
                                           final startAt =
-                                              value.startAt.toDate();
+                                          value.startAt.toDate();
                                           final now = DateTime.now();
 
                                           final difference =
@@ -290,15 +291,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (seconds.value < maxTime &&
                                               seconds.value > 0) {
                                             adminController.variablesModel
-                                                        .isGold?.value ==
-                                                    true
+                                                .isGold?.value ==
+                                                true
                                                 ? Get.to(CopyTradeScreen(
-                                                    title: 'Gold',
-                                                    commodityType: 'rGold',
-                                                    endTime: seconds.value,
-                                                  ))
+                                              title: 'Gold',
+                                              commodityType: 'rGold',
+                                              endTime: seconds.value,
+                                            ))
                                                 : Get.snackbar('Alert',
-                                                    'This will be start by admin');
+                                                'This will be start by admin');
                                           }
                                           isLoading = false;
                                         });
@@ -311,9 +312,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                       width: SizeConfig.screenWidth * 0.03),
                                   CurrencyCard(
-                                    color: adminController.variablesModel
-                                                .isSilver?.value ==
-                                            true
+                                    color: xSilver
+                                    // adminController.variablesModel
+                                    //             .isSilver?.value ==
+                                    //         true
                                         ? Colors.red
                                         : Colors.grey,
                                     onTap: () {
@@ -322,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .getCountDownTime('rSilver')
                                             .then((value) {
                                           final startAt =
-                                              value.startAt.toDate();
+                                          value.startAt.toDate();
                                           final now = DateTime.now();
 
                                           final difference =
@@ -333,15 +335,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (seconds.value < maxTime &&
                                               seconds.value > 0) {
                                             adminController.variablesModel
-                                                        .isSilver?.value ==
-                                                    true
+                                                .isSilver?.value ==
+                                                true
                                                 ? Get.to(CopyTradeScreen(
-                                                    title: 'Silver',
-                                                    commodityType: 'rSilver',
-                                                    endTime: seconds.value,
-                                                  ))
+                                              title: 'Silver',
+                                              commodityType: 'rSilver',
+                                              endTime: seconds.value,
+                                            ))
                                                 : Get.snackbar('Alert',
-                                                    'This will be start by admin');
+                                                'This will be start by admin');
                                           }
                                           isLoading = false;
                                         });
@@ -354,9 +356,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                       width: SizeConfig.screenWidth * 0.03),
                                   CurrencyCard(
-                                    color: adminController.variablesModel
-                                                .isCrudeOil?.value ==
-                                            true
+                                    color: xCrudeOil
+                                    // adminController.variablesModel
+                                    //             .isCrudeOil?.value ==
+                                    //         true
                                         ? Colors.red
                                         : Colors.grey,
                                     onTap: () {
@@ -365,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .getCountDownTime('rCrudeOil')
                                             .then((value) {
                                           final startAt =
-                                              value.startAt.toDate();
+                                          value.startAt.toDate();
                                           final now = DateTime.now();
 
                                           final difference =
@@ -376,15 +379,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if (seconds.value < maxTime &&
                                               seconds.value > 0) {
                                             adminController.variablesModel
-                                                        .isCrudeOil?.value ==
-                                                    true
+                                                .isCrudeOil?.value ==
+                                                true
                                                 ? Get.to(CopyTradeScreen(
-                                                    title: 'Oil',
-                                                    commodityType: 'rCrudeOil',
-                                                    endTime: seconds.value,
-                                                  ))
+                                              title: 'Oil',
+                                              commodityType: 'rCrudeOil',
+                                              endTime: seconds.value,
+                                            ))
                                                 : Get.snackbar('Alert',
-                                                    'This will be start by admin');
+                                                'This will be start by admin');
                                           }
                                           isLoading = false;
                                         });
@@ -395,8 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     value: random2,
                                   )
                                 ],
-                              ))))
-                    ],
+                              )))                    ],
                   ),
                 ),
               );
@@ -516,73 +518,102 @@ class _HomeScreenState extends State<HomeScreen> {
 //   });
 // }
 
-bool booleanCheckLiteCoin(){
-  {
-    if (!isLoading) {
-      MyDatabase().getCountDownTime('rLiteCoin')
-          .then((value) {
-        final startAt = value.startAt.toDate();
-        final now = DateTime.now();
+  // bool coinBaseN = false;
+  // bool rLiteCoinN = false;
+  // bool rAmazonCoinN = false;
+  // bool rCrudeOilN = false;
+  // bool rGoldN = false;
+  // bool rSilver = false;
 
-        final difference =
-            startAt.difference(now).inSeconds;
 
-        seconds.value = maxTime + difference;
-
-        if (seconds.value < maxTime && seconds.value > 0) {
-          if(adminController.variablesModel.isLite?.value == true)
-            {
-              return true;
-            }
-          else{
-            return false;
-          }
-        }
-        else {
-          return false;
-        }
-      });
-    }
-    return false;
-  }
+  Future<void> boolAll ()async{
+    await booleanCheckCoinBase();
+    await booleanCheckLiteCoin();
+    await booleanCheckAmazon();
+    await booleanCheckCrudeOil();
+    await booleanCheckSilver();
+    await booleanCheckGold();
 }
 
-bool coinBaseN = false;
-Future<bool> booleanCheckCoinBase() async{
-    {
-      if (!isLoading) {
-        await MyDatabase().getCountDownTime('rCoinbase')
-            .then((value) {
-          final startAt = value.startAt.toDate();
-          final now = DateTime.now();
 
-          final difference =
-              startAt.difference(now).inSeconds;
+  bool xCoinBase = false;
+  bool xCrudeOil = false;
+  bool xGold = false;
+  bool xSilver = false;
+  bool xAmazon = false;
+  bool xLiteCoin = false;
 
-          seconds.value = maxTime + difference;
+  Future<bool> booleanCheckSilver() async{
+    bool status = await MyDatabase().getTypeStatus2("rSilver");
+    xSilver = status;
+//    print("rcoinbase is returning $status");
+//    developer.log("database is returning $status");
+    return status;
 
-          if (seconds.value < maxTime && seconds.value > 0) {
-            if(adminController.variablesModel.isCoinbase?.value == true)
-            {
-              coinBaseN = true;
-              return true;
-            }
-            else{
-              coinBaseN = false;
-              return false;
-            }
-          }
-          else {
-            coinBaseN = false;
-            return false;
-          }
-        });
-      }
-      coinBaseN = false;
-      return false;
-    }
   }
 
+
+  Future<bool> booleanCheckCrudeOil() async{
+    bool status = await MyDatabase().getTypeStatus2("rCrudeOil");
+    xCrudeOil = status;
+//    print("rcoinbase is returning $status");
+//    developer.log("database is returning $status");
+    return status;
+
+  }
+
+
+  Future<bool> booleanCheckAmazon() async{
+    bool status = await MyDatabase().getTypeStatus2("rAmazon");
+    xAmazon = status;
+//    print("rcoinbase is returning $status");
+//    developer.log("database is returning $status");
+    return status;
+
+  }
+
+
+  Future<bool> booleanCheckGold() async{
+    bool status = await MyDatabase().getTypeStatus2("rGold");
+    xGold = status;
+//    print("rcoinbase is returning $status");
+//    developer.log("database is returning $status");
+    return status;
+
+  }
+
+
+  Future<bool> booleanCheckLiteCoin() async{
+    bool status = await MyDatabase().getTypeStatus2("rLiteCoin");
+    xLiteCoin = status;
+//    print("rcoinbase is returning $status");
+//    developer.log("database is returning $status");
+    return status;
+
+  }
+
+  Future<bool> booleanCheckCoinBase() async{
+    bool status = await MyDatabase().getTypeStatus2("rCoinbase");
+    xCoinBase = status;
+    print("rcoinbase is returning $status");
+    developer.log("database is returning $status");
+    return status;
+  }
+
+
+
+
+
+
+// Future<bool> booleanCheckCoinBase() async{
+  //   // await Future.delayed(Duration(seconds: 10));
+  //  bool status = await MyDatabase().getTypeStatus("rCoinbase");
+  //  x = status;
+  //  coinBaseN = status;
+  //  print("database is returning $status");
+  //  developer.log("database is returning $status");
+  //  return status;
+  // }
 
 }
 

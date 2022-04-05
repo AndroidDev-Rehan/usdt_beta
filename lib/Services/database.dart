@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:usdt_beta/Controller/admin_controller.dart';
@@ -328,6 +329,31 @@ class MyDatabase {
       print(e);
       rethrow;
     }
+  }
+
+
+  Future<bool> getTypeStatus2(String coinType) async{
+    final DocumentSnapshot snapshot = await _firestore.collection('CountDown').doc(coinType).get();
+    final Map<String,dynamic> map = snapshot.data();
+    Timestamp timestamp = map['endAt'] as Timestamp;
+    if(timestamp.millisecondsSinceEpoch < Timestamp.now().millisecondsSinceEpoch)
+      return false;
+    return true;
+
+  }
+
+  Future<bool> getTypeStatus (String coinType) async {
+    final DocumentSnapshot snapshot = await _firestore.collection('Admin').doc('s0bkpSrG6x9gwvdzNM2n').get();
+    final Map<String,bool> map = snapshot.data();
+
+    return map[coinType];
+
+    // if(map[coinType]) {
+    //   log("map[coinType] is ${map[coinType]}");
+    //   return true;
+    // }
+    // log("map[coinType] is ${map[coinType]}");
+    // return false;
   }
 
   updateValues(String commodityType, bool value) async {
