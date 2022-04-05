@@ -22,6 +22,8 @@ class AdminController extends GetxController {
   //   vari = await MyDatabase().getVariValues('s0bkpSrG6x9gwvdzNM2n');
   // }
 
+  ///TODO GETTING INFO ABOUT WHICH COPY TRADES ARE ENABLED
+
   @override
   void onInit() {
     adminVariable.bindStream(getAdminVariables());

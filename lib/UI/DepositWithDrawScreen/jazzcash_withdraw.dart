@@ -13,14 +13,15 @@ import '../../Controller/userController.dart';
 import '../../Model/withdraw_model.dart';
 import '../../Widgets/input_fields.dart';
 
-class JazzCashWithdrawScreen extends StatefulWidget {
-  const JazzCashWithdrawScreen({Key key}) : super(key: key);
+class NonBankWithdrawScreen extends StatefulWidget {
+  final String paymentMethod;
+  const NonBankWithdrawScreen(this.paymentMethod,{Key key,}) : super(key: key);
 
   @override
-  State<JazzCashWithdrawScreen> createState() => _JazzCashWithdrawScreenState();
+  State<NonBankWithdrawScreen> createState() => _NonBankWithdrawScreenState();
 }
 
-class _JazzCashWithdrawScreenState extends State<JazzCashWithdrawScreen> {
+class _NonBankWithdrawScreenState extends State<NonBankWithdrawScreen> {
   TextEditingController wAccNameController = new TextEditingController();
 
   TextEditingController wACCNoController = new TextEditingController();
@@ -135,7 +136,7 @@ class _JazzCashWithdrawScreenState extends State<JazzCashWithdrawScreen> {
             userId: userController.user.uid,
             userEmail: userController.user.email,
             amount: double.parse(wAmountController.text),
-            paymentMethod: "jazzcash",
+            paymentMethod: widget.paymentMethod,
             withdrawRequestId: "${userController.user.uid} $timeStamp",
         accountName: wAccNameController.text,
         accountNo: wACCNoController.text,

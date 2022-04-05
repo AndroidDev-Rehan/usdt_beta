@@ -257,6 +257,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           SizedBox(width: SizeConfig.screenWidth * 0.03),
                           CurrencyCard(
+                            ///TODO CHECKING IF AMAZON TRADE IS TURNED ON
+                            ///REMOVE TRUE AND CHECK
                             color: adminController
                                         .variablesModel.isAmazon?.value ==
                                     true

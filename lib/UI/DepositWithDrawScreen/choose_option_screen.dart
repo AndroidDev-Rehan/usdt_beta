@@ -42,10 +42,35 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreen> {
             AuthButton(
               label: 'JazzCash',
               onTap: () {
-                Get.to(JazzCashWithdrawScreen());
+                Get.to(NonBankWithdrawScreen("JazzCash".toLowerCase()));
+//                Get.to(WithDrawWidget());
+              },
+            ),
+            SizedBox(height: SizeConfig.screenHeight * 0.01),
+            AuthButton(
+              label: 'Skype',
+              onTap: () {
+                Get.to(NonBankWithdrawScreen("Skype".toLowerCase()));
+//                Get.to(WithDrawWidget());
+              },
+            ),
+            SizedBox(height: SizeConfig.screenHeight * 0.01),
+            AuthButton(
+              label: 'Skrill',
+              onTap: () {
+                Get.to(NonBankWithdrawScreen("Skrill".toLowerCase()));
+//                Get.to(WithDrawWidget());
+              },
+            ),
+            SizedBox(height: SizeConfig.screenHeight * 0.01),
+            AuthButton(
+              label: 'Vault Address',
+              onTap: () {
+                Get.to(NonBankWithdrawScreen("Vault Address".toLowerCase()));
 //                Get.to(WithDrawWidget());
               },
             )
+
           ],
         ),
       ),

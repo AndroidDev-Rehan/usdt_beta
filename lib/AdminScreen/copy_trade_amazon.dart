@@ -176,9 +176,11 @@ class _CopyTradeAmazonState extends State<CopyTradeAmazon> {
 
                                               startTimer();
 
+                                              ///TODO WHAT THE F?
+
                                               adminController.variablesModel
                                                   .isAmazon?.value = true;
-
+                                              ///TODO AMAZON COPY TRADE FROM ADMIN SIDE
                                               MyDatabase().updateValues(
                                                   'rAmazon', true);
 
