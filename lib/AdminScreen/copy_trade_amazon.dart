@@ -34,8 +34,8 @@ class _CopyTradeAmazonState extends State<CopyTradeAmazon> {
 
   // static const maxSeconds = 180;
   Timer timer;
-  final int maxTime = 120;
-  RxInt seconds = 120.obs;
+  final int maxTime = 420;
+  RxInt seconds = 420.obs;
   RxBool isRunning = false.obs;
   double profit = 0;
 
@@ -186,7 +186,7 @@ class _CopyTradeAmazonState extends State<CopyTradeAmazon> {
 
                                               DateTime endDateTime =
                                                   DateTime.now().add(
-                                                      Duration(seconds: 120));
+                                                      Duration(seconds: 420));
 
                                               Timestamp endTime =
                                                   Timestamp.fromDate(

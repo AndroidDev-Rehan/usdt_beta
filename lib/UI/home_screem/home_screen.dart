@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:usdt_beta/Controller/referal_controller.dart';
 import 'package:usdt_beta/Controller/regular_trade_controller.dart';
 import 'package:usdt_beta/Controller/userController.dart';
 import 'package:usdt_beta/Services/database.dart';
+import 'package:usdt_beta/UI/home_screem/coming_soon_screen.dart';
 import 'package:usdt_beta/UI/home_screem/home_widgets/copy_trade_screen.dart';
 import 'package:usdt_beta/UI/home_screem/home_widgets/currency_card.dart';
 import 'package:usdt_beta/UI/home_screem/home_widgets/regular_trading.dart';
@@ -47,27 +49,27 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  Random random = new Random(100);
-  double randomNumber = 0.0;
-  double random2 = 0.0;
-  double random3 = 0.0;
-  double random4 = 0.0;
-  double random5 = 0.0;
-  double random6 = 0.0;
+  // Random random = new Random(100);
+  // double randomNumber = 0.0;
+  // double random2 = 0.0;
+  // double random3 = 0.0;
+  // double random4 = 0.0;
+  // double random5 = 0.0;
+  // double random6 = 0.0;
 
   @override
   Widget build(BuildContext context) {
-    randomNumber = random.nextDouble();
-    random2 = random.nextDouble();
-    random3 = random.nextDouble();
-    random4 = random.nextDouble();
-    random5 = random.nextDouble();
-    random6 = random.nextDouble();
-    Timer(Duration(seconds: 6), () {
-      if (mounted) {
-        setState(() => print('Data updated'));
-      }
-    });
+    // randomNumber = random.nextDouble();
+    // random2 = random.nextDouble();
+    // random3 = random.nextDouble();
+    // random4 = random.nextDouble();
+    // random5 = random.nextDouble();
+    // random6 = random.nextDouble();
+    // Timer(Duration(seconds: 6), () {
+    //   if (mounted) {
+    //     setState(() => print('Data updated'));
+    //   }
+    // });
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -103,370 +105,303 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: SizeConfig.screenHeight * 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text('Regular Trading',
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-              ),
-              RegularCard(
-                color: Colors.amber,
-                randomNumber: randomNumber,
-                title: 'Gold',
-                onTap: () {
-                  regularTradeController.seconds.value = 420;
-                  Get.to(TradeScreen(
-                    color: Colors.amber,
-                    title: 'rGold',
-                    rate: random2,
-                  ));
-                },
-              ),
-              //SizedBox(height: SizeConfig.screenHeight * 0.0001),
-              RegularCard(
-                randomNumber: random2,
-                title: 'Crude Oil',
-                onTap: () {
-                  regularTradeController.seconds.value = 420;
+      body: FutureBuilder(
+        future: booleanCheckCoinBase(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          else {
+              return SingleChildScrollView(
+                child: Container(
+                  height: SizeConfig.screenHeight * 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HomeScreenUpperPart(),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text('Copy Trading',
+                            style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
+                      ),
+                      Obx(() => Flexible(
+                          child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                      width: SizeConfig.screenWidth * 0.03),
+                                  CurrencyCard(
+                                    color: coinBaseN
+                                        // adminController.variablesModel.isCoinbase?.value == true
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    onTap: () {
+                                      if (!isLoading) {
+                                        MyDatabase()
+                                            .getCountDownTime('rCoinbase')
+                                            .then((value) {
+                                          final startAt =
+                                              value.startAt.toDate();
+                                          final now = DateTime.now();
 
-                  Get.to(TradeScreen(
-                    rate: random2,
-                    color: Color(0xff41403f),
-                    title: 'rCrudeOil',
-                  ));
-                },
-                color: Color(0xff41403f),
-              ),
-              RegularCard(
-                randomNumber: random3,
-                title: 'Silver',
-                onTap: () {
-                  regularTradeController.seconds.value = 420;
+                                          final difference =
+                                              startAt.difference(now).inSeconds;
 
-                  Get.to(TradeScreen(
-                    rate: random3,
-                    color: Color(0xff9d9384),
-                    title: 'rSilver',
-                  ));
-                },
-                color: Color(0xff9d9384),
-              ),
-              RegularCard(
-                randomNumber: random4,
-                title: 'CoinBase',
-                onTap: () {
-                  regularTradeController.seconds.value = 420;
+                                          seconds.value = maxTime + difference;
 
-                  Get.to(TradeScreen(
-                    rate: random4,
-                    color: Color(0xff1f73f2),
-                    title: 'rCoinbase',
-                  ));
-                },
-                color: Color(0xff1f73f2),
-              ),
-              RegularCard(
-                randomNumber: random5,
-                title: 'Amazon',
-                onTap: () {
-                  regularTradeController.seconds.value = 420;
-
-                  Get.to(TradeScreen(
-                    rate: random5,
-                    color: Color(0xffeb9134),
-                    title: 'rAmazon',
-                  ));
-                },
-                color: Color(0xffeb9134),
-              ),
-              RegularCard(
-                randomNumber: random6,
-                title: 'Lite Coins',
-                onTap: () {
-                  regularTradeController.seconds.value = 420;
-
-                  Get.to(TradeScreen(
-                    rate: random6,
-                    color: Color(0xffebbe7f),
-                    title: 'rLiteCoin',
-                  ));
-                },
-                color: Color(0xffebbe7f),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text('Copy Trading',
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-              ),
-              Obx(() => Flexible(
-                  child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          SizedBox(width: SizeConfig.screenWidth * 0.03),
-                          CurrencyCard(
-                            color: adminController
-                                        .variablesModel.isCoinbase?.value ==
-                                    true
-                                ? Colors.red
-                                : Colors.grey,
-                            onTap: () {
-                              if (!isLoading) {
-                                MyDatabase()
-                                    .getCountDownTime('rCoinbase')
-                                    .then((value) {
-                                  final startAt = value.startAt.toDate();
-                                  final now = DateTime.now();
-
-                                  final difference =
-                                      startAt.difference(now).inSeconds;
-
-                                  seconds.value = maxTime + difference;
-
-                                  if (seconds.value < maxTime &&
-                                      seconds.value > 0) {
-                                    adminController.variablesModel.isCoinbase
-                                                ?.value ==
+                                          if (seconds.value < maxTime &&
+                                              seconds.value > 0) {
+                                            adminController.variablesModel
+                                                        .isCoinbase?.value ==
+                                                    true
+                                                ? Get.to(CopyTradeScreen(
+                                                    title: 'Coinbase',
+                                                    commodityType: 'rCoinbase',
+                                                    endTime: seconds.value,
+                                                  ))
+                                                : Get.snackbar('Alert',
+                                                    'This will be start by admin');
+                                          }
+                                          isLoading = false;
+                                        });
+                                      }
+                                    },
+                                    image: 'assets/images/coinbase.jpg',
+                                    title: 'Coinbase Global Inc.',
+                                    value: random4,
+                                  ),
+                                  SizedBox(
+                                      width: SizeConfig.screenWidth * 0.03),
+                                  CurrencyCard(
+                                    ///TODO CHECKING IF AMAZON TRADE IS TURNED ON
+                                    ///REMOVE TRUE AND CHECK
+                                    color: adminController.variablesModel
+                                                .isAmazon?.value ==
                                             true
-                                        ? Get.to(CopyTradeScreen(
-                                            title: 'Coinbase',
-                                            commodityType: 'rCoinbase',
-                                            endTime: seconds.value,
-                                          ))
-                                        : Get.snackbar('Alert',
-                                            'This will be start by admin');
-                                  }
-                                  isLoading = false;
-                                });
-                              }
-                            },
-                            image: 'assets/images/coinbase.jpg',
-                            title: 'Coinbase Global Inc.',
-                            value: random4,
-                          ),
-                          SizedBox(width: SizeConfig.screenWidth * 0.03),
-                          CurrencyCard(
-                            ///TODO CHECKING IF AMAZON TRADE IS TURNED ON
-                            ///REMOVE TRUE AND CHECK
-                            color: adminController
-                                        .variablesModel.isAmazon?.value ==
-                                    true
-                                ? Colors.red
-                                : Colors.grey,
-                            onTap: () {
-                              if (!isLoading) {
-                                MyDatabase()
-                                    .getCountDownTime('rAmazon')
-                                    .then((value) {
-                                  final startAt = value.startAt.toDate();
-                                  final now = DateTime.now();
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    onTap: () {
+                                      if (!isLoading) {
+                                        MyDatabase()
+                                            .getCountDownTime('rAmazon')
+                                            .then((value) {
+                                          final startAt =
+                                              value.startAt.toDate();
+                                          final now = DateTime.now();
 
-                                  final difference =
-                                      startAt.difference(now).inSeconds;
+                                          final difference =
+                                              startAt.difference(now).inSeconds;
 
-                                  seconds.value = maxTime + difference;
+                                          seconds.value = maxTime + difference;
 
-                                  if (seconds.value < maxTime &&
-                                      seconds.value > 0) {
-                                    adminController.variablesModel.isAmazon
-                                                ?.value ==
-                                            true
-                                        ? Get.to(CopyTradeScreen(
-                                            title: 'Amazon',
-                                            commodityType: 'rAmazon',
-                                            endTime: seconds.value,
-                                          ))
-                                        : Get.snackbar('Alert',
-                                            'This will be start by admin');
-                                  }
-                                  isLoading = false;
-                                });
-                              }
-                            },
-                            image: 'assets/images/amazon.jpg',
-                            title: 'Amazon.com, Inc.',
-                            value: random5,
-                          ),
-                          SizedBox(width: SizeConfig.screenWidth * 0.03),
-                          CurrencyCard(
-                            color:
-                                adminController.variablesModel.isLite?.value ==
-                                        true
-                                    ? Colors.red
-                                    : Colors.grey,
-                            onTap: () {
-                              if (!isLoading) {
-                                MyDatabase()
-                                    .getCountDownTime('rLiteCoin')
-                                    .then((value) {
-                                  final startAt = value.startAt.toDate();
-                                  final now = DateTime.now();
+                                          if (seconds.value < maxTime &&
+                                              seconds.value > 0) {
+                                            adminController.variablesModel
+                                                        .isAmazon?.value ==
+                                                    true
+                                                ? Get.to(CopyTradeScreen(
+                                                    title: 'Amazon',
+                                                    commodityType: 'rAmazon',
+                                                    endTime: seconds.value,
+                                                  ))
+                                                : Get.snackbar('Alert',
+                                                    'This will be start by admin');
+                                          }
+                                          isLoading = false;
+                                        });
+                                      }
+                                    },
+                                    image: 'assets/images/amazon.jpg',
+                                    title: 'Amazon.com, Inc.',
+                                    value: random5,
+                                  ),
+                                  SizedBox(
+                                      width: SizeConfig.screenWidth * 0.03),
+                                  CurrencyCard(
+                                    color: booleanCheckLiteCoin()
+                                        // adminController.variablesModel.isLite?.value == true
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    onTap: () {
+                                      if (!isLoading) {
+                                        MyDatabase()
+                                            .getCountDownTime('rLiteCoin')
+                                            .then((value) {
+                                          final startAt =
+                                              value.startAt.toDate();
+                                          final now = DateTime.now();
 
-                                  final difference =
-                                      startAt.difference(now).inSeconds;
+                                          final difference =
+                                              startAt.difference(now).inSeconds;
 
-                                  seconds.value = maxTime + difference;
+                                          seconds.value = maxTime + difference;
 
-                                  if (seconds.value < maxTime &&
-                                      seconds.value > 0) {
-                                    adminController
-                                                .variablesModel.isLite?.value ==
-                                            true
-                                        ? Get.to(CopyTradeScreen(
-                                            title: 'Lite',
-                                            commodityType: 'rLiteCoin',
-                                            endTime: seconds.value,
-                                          ))
-                                        : Get.snackbar('Alert',
-                                            'This will be start by admin');
-                                  }
-                                  isLoading = false;
-                                });
-                              }
-                            },
-                            image: 'assets/images/litecoin.jpeg',
-                            title: 'Lite Coin',
-                            value: random6,
-                          ),
-                          SizedBox(width: SizeConfig.screenWidth * 0.03),
-                          CurrencyCard(
-                            color:
-                                adminController.variablesModel.isGold?.value ==
-                                        true
-                                    ? Colors.red
-                                    : Colors.grey,
-                            onTap: () {
-                              if (!isLoading) {
-                                MyDatabase()
-                                    .getCountDownTime('rGold')
-                                    .then((value) {
-                                  final startAt = value.startAt.toDate();
-                                  final now = DateTime.now();
-
-                                  final difference =
-                                      startAt.difference(now).inSeconds;
-
-                                  seconds.value = maxTime + difference;
-
-                                  if (seconds.value < maxTime &&
-                                      seconds.value > 0) {
-                                    adminController
+                                          if (seconds.value < maxTime &&
+                                              seconds.value > 0) {
+                                            adminController.variablesModel
+                                                        .isLite?.value ==
+                                                    true
+                                                ? Get.to(CopyTradeScreen(
+                                                    title: 'Lite',
+                                                    commodityType: 'rLiteCoin',
+                                                    endTime: seconds.value,
+                                                  ))
+                                                : Get.snackbar('Alert',
+                                                    'This will be start by admin');
+                                          }
+                                          isLoading = false;
+                                        });
+                                      } else {
+                                        developer
+                                            .log("This will be start by admin");
+                                      }
+                                    },
+                                    image: 'assets/images/litecoin.jpeg',
+                                    title: 'Lite Coin',
+                                    value: random6,
+                                  ),
+                                  SizedBox(
+                                      width: SizeConfig.screenWidth * 0.03),
+                                  CurrencyCard(
+                                    color: adminController
                                                 .variablesModel.isGold?.value ==
                                             true
-                                        ? Get.to(CopyTradeScreen(
-                                            title: 'Gold',
-                                            commodityType: 'rGold',
-                                            endTime: seconds.value,
-                                          ))
-                                        : Get.snackbar('Alert',
-                                            'This will be start by admin');
-                                  }
-                                  isLoading = false;
-                                });
-                              }
-                            },
-                            image: 'assets/images/gold.jpeg',
-                            title: 'Gold',
-                            value: randomNumber,
-                          ),
-                          SizedBox(width: SizeConfig.screenWidth * 0.03),
-                          CurrencyCard(
-                            color: adminController
-                                        .variablesModel.isSilver?.value ==
-                                    true
-                                ? Colors.red
-                                : Colors.grey,
-                            onTap: () {
-                              if (!isLoading) {
-                                MyDatabase()
-                                    .getCountDownTime('rSilver')
-                                    .then((value) {
-                                  final startAt = value.startAt.toDate();
-                                  final now = DateTime.now();
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    onTap: () {
+                                      if (!isLoading) {
+                                        MyDatabase()
+                                            .getCountDownTime('rGold')
+                                            .then((value) {
+                                          final startAt =
+                                              value.startAt.toDate();
+                                          final now = DateTime.now();
 
-                                  final difference =
-                                      startAt.difference(now).inSeconds;
+                                          final difference =
+                                              startAt.difference(now).inSeconds;
 
-                                  seconds.value = maxTime + difference;
+                                          seconds.value = maxTime + difference;
 
-                                  if (seconds.value < maxTime &&
-                                      seconds.value > 0) {
-                                    adminController.variablesModel.isSilver
-                                                ?.value ==
+                                          if (seconds.value < maxTime &&
+                                              seconds.value > 0) {
+                                            adminController.variablesModel
+                                                        .isGold?.value ==
+                                                    true
+                                                ? Get.to(CopyTradeScreen(
+                                                    title: 'Gold',
+                                                    commodityType: 'rGold',
+                                                    endTime: seconds.value,
+                                                  ))
+                                                : Get.snackbar('Alert',
+                                                    'This will be start by admin');
+                                          }
+                                          isLoading = false;
+                                        });
+                                      }
+                                    },
+                                    image: 'assets/images/gold.jpeg',
+                                    title: 'Gold',
+                                    value: randomNumber,
+                                  ),
+                                  SizedBox(
+                                      width: SizeConfig.screenWidth * 0.03),
+                                  CurrencyCard(
+                                    color: adminController.variablesModel
+                                                .isSilver?.value ==
                                             true
-                                        ? Get.to(CopyTradeScreen(
-                                            title: 'Silver',
-                                            commodityType: 'rSilver',
-                                            endTime: seconds.value,
-                                          ))
-                                        : Get.snackbar('Alert',
-                                            'This will be start by admin');
-                                  }
-                                  isLoading = false;
-                                });
-                              }
-                            },
-                            image: 'assets/images/silver.jpeg',
-                            title: 'Silver',
-                            value: random3,
-                          ),
-                          SizedBox(width: SizeConfig.screenWidth * 0.03),
-                          CurrencyCard(
-                            color: adminController
-                                        .variablesModel.isCrudeOil?.value ==
-                                    true
-                                ? Colors.red
-                                : Colors.grey,
-                            onTap: () {
-                              if (!isLoading) {
-                                MyDatabase()
-                                    .getCountDownTime('rCrudeOil')
-                                    .then((value) {
-                                  final startAt = value.startAt.toDate();
-                                  final now = DateTime.now();
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    onTap: () {
+                                      if (!isLoading) {
+                                        MyDatabase()
+                                            .getCountDownTime('rSilver')
+                                            .then((value) {
+                                          final startAt =
+                                              value.startAt.toDate();
+                                          final now = DateTime.now();
 
-                                  final difference =
-                                      startAt.difference(now).inSeconds;
+                                          final difference =
+                                              startAt.difference(now).inSeconds;
 
-                                  seconds.value = maxTime + difference;
+                                          seconds.value = maxTime + difference;
 
-                                  if (seconds.value < maxTime &&
-                                      seconds.value > 0) {
-                                    adminController.variablesModel.isCrudeOil
-                                                ?.value ==
+                                          if (seconds.value < maxTime &&
+                                              seconds.value > 0) {
+                                            adminController.variablesModel
+                                                        .isSilver?.value ==
+                                                    true
+                                                ? Get.to(CopyTradeScreen(
+                                                    title: 'Silver',
+                                                    commodityType: 'rSilver',
+                                                    endTime: seconds.value,
+                                                  ))
+                                                : Get.snackbar('Alert',
+                                                    'This will be start by admin');
+                                          }
+                                          isLoading = false;
+                                        });
+                                      }
+                                    },
+                                    image: 'assets/images/silver.jpeg',
+                                    title: 'Silver',
+                                    value: random3,
+                                  ),
+                                  SizedBox(
+                                      width: SizeConfig.screenWidth * 0.03),
+                                  CurrencyCard(
+                                    color: adminController.variablesModel
+                                                .isCrudeOil?.value ==
                                             true
-                                        ? Get.to(CopyTradeScreen(
-                                            title: 'Oil',
-                                            commodityType: 'rCrudeOil',
-                                            endTime: seconds.value,
-                                          ))
-                                        : Get.snackbar('Alert',
-                                            'This will be start by admin');
-                                  }
-                                  isLoading = false;
-                                });
-                              }
-                            },
-                            image: 'assets/images/crudeoil.jpeg',
-                            title: 'Crude Oil WTI',
-                            value: random2,
-                          )
-                        ],
-                      ))))
-            ],
-          ),
-        ),
+                                        ? Colors.red
+                                        : Colors.grey,
+                                    onTap: () {
+                                      if (!isLoading) {
+                                        MyDatabase()
+                                            .getCountDownTime('rCrudeOil')
+                                            .then((value) {
+                                          final startAt =
+                                              value.startAt.toDate();
+                                          final now = DateTime.now();
+
+                                          final difference =
+                                              startAt.difference(now).inSeconds;
+
+                                          seconds.value = maxTime + difference;
+
+                                          if (seconds.value < maxTime &&
+                                              seconds.value > 0) {
+                                            adminController.variablesModel
+                                                        .isCrudeOil?.value ==
+                                                    true
+                                                ? Get.to(CopyTradeScreen(
+                                                    title: 'Oil',
+                                                    commodityType: 'rCrudeOil',
+                                                    endTime: seconds.value,
+                                                  ))
+                                                : Get.snackbar('Alert',
+                                                    'This will be start by admin');
+                                          }
+                                          isLoading = false;
+                                        });
+                                      }
+                                    },
+                                    image: 'assets/images/crudeoil.jpeg',
+                                    title: 'Crude Oil WTI',
+                                    value: random2,
+                                  )
+                                ],
+                              ))))
+                    ],
+                  ),
+                ),
+              );
+            }
+          }
       ),
     );
   }
@@ -580,4 +515,218 @@ class _HomeScreenState extends State<HomeScreen> {
 //     isLoading = false;
 //   });
 // }
+
+bool booleanCheckLiteCoin(){
+  {
+    if (!isLoading) {
+      MyDatabase().getCountDownTime('rLiteCoin')
+          .then((value) {
+        final startAt = value.startAt.toDate();
+        final now = DateTime.now();
+
+        final difference =
+            startAt.difference(now).inSeconds;
+
+        seconds.value = maxTime + difference;
+
+        if (seconds.value < maxTime && seconds.value > 0) {
+          if(adminController.variablesModel.isLite?.value == true)
+            {
+              return true;
+            }
+          else{
+            return false;
+          }
+        }
+        else {
+          return false;
+        }
+      });
+    }
+    return false;
+  }
 }
+
+bool coinBaseN = false;
+Future<bool> booleanCheckCoinBase() async{
+    {
+      if (!isLoading) {
+        await MyDatabase().getCountDownTime('rCoinbase')
+            .then((value) {
+          final startAt = value.startAt.toDate();
+          final now = DateTime.now();
+
+          final difference =
+              startAt.difference(now).inSeconds;
+
+          seconds.value = maxTime + difference;
+
+          if (seconds.value < maxTime && seconds.value > 0) {
+            if(adminController.variablesModel.isCoinbase?.value == true)
+            {
+              coinBaseN = true;
+              return true;
+            }
+            else{
+              coinBaseN = false;
+              return false;
+            }
+          }
+          else {
+            coinBaseN = false;
+            return false;
+          }
+        });
+      }
+      coinBaseN = false;
+      return false;
+    }
+  }
+
+
+}
+
+Random random = new Random(100);
+double randomNumber = 0.0;
+double random2 = 0.0;
+double random3 = 0.0;
+double random4 = 0.0;
+double random5 = 0.0;
+double random6 = 0.0;
+
+
+class HomeScreenUpperPart extends StatefulWidget {
+  const HomeScreenUpperPart({Key key}) : super(key: key);
+
+  @override
+  State<HomeScreenUpperPart> createState() => _HomeScreenUpperPartState();
+}
+
+
+
+class _HomeScreenUpperPartState extends State<HomeScreenUpperPart> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    randomNumber = random.nextDouble();
+    random2 = random.nextDouble();
+    random3 = random.nextDouble();
+    random4 = random.nextDouble();
+    random5 = random.nextDouble();
+    random6 = random.nextDouble();
+    Timer(Duration(seconds: 6), () {
+      if (mounted) {
+        setState(() => print('Data updated'));
+      }
+    });
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text('Regular Trading',
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
+        ),
+        RegularCard(
+          color: Colors.amber,
+          randomNumber: randomNumber,
+          title: 'Gold',
+          onTap: () {
+            Get.to(ComingSoonScreen());
+            // regularTradeController.seconds.value = 420;
+            // Get.to(TradeScreen(
+            //   color: Colors.amber,
+            //   title: 'rGold',
+            //   rate: random2,
+            // ));
+          },
+        ),
+        //SizedBox(height: SizeConfig.screenHeight * 0.0001),
+        RegularCard(
+          randomNumber: random2,
+          title: 'Crude Oil',
+          onTap: () {
+            Get.to(ComingSoonScreen());
+            // regularTradeController.seconds.value = 420;
+            //
+            // Get.to(TradeScreen(
+            //   rate: random2,
+            //   color: Color(0xff41403f),
+            //   title: 'rCrudeOil',
+            // ));
+          },
+          color: Color(0xff41403f),
+        ),
+        RegularCard(
+          randomNumber: random3,
+          title: 'Silver',
+          onTap: () {
+            Get.to(ComingSoonScreen());
+            // regularTradeController.seconds.value = 420;
+            //
+            // Get.to(TradeScreen(
+            //   rate: random3,
+            //   color: Color(0xff9d9384),
+            //   title: 'rSilver',
+            // ));
+          },
+          color: Color(0xff9d9384),
+        ),
+        RegularCard(
+          randomNumber: random4,
+          title: 'CoinBase',
+          onTap: () {
+            Get.to(ComingSoonScreen());
+            // regularTradeController.seconds.value = 420;
+            //
+            // Get.to(TradeScreen(
+            //   rate: random4,
+            //   color: Color(0xff1f73f2),
+            //   title: 'rCoinbase',
+            // ));
+          },
+          color: Color(0xff1f73f2),
+        ),
+        RegularCard(
+          randomNumber: random5,
+          title: 'Amazon',
+          onTap: () {
+            Get.to(ComingSoonScreen());
+            // regularTradeController.seconds.value = 420;
+            //
+            // Get.to(TradeScreen(
+            //   rate: random5,
+            //   color: Color(0xffeb9134),
+            //   title: 'rAmazon',
+            // ));
+          },
+          color: Color(0xffeb9134),
+        ),
+        RegularCard(
+          randomNumber: random6,
+          title: 'Lite Coins',
+          onTap: () {
+            Get.to(ComingSoonScreen());
+
+            // regularTradeController.seconds.value = 420;
+            //
+            // Get.to(TradeScreen(
+            //   rate: random6,
+            //   color: Color(0xffebbe7f),
+            //   title: 'rLiteCoin',
+            // ));
+          },
+          color: Color(0xffebbe7f),
+        ),
+
+      ],
+    );
+  }
+}
+
+
+

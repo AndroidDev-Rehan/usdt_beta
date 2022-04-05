@@ -35,9 +35,9 @@ class _CopyTradeOilState extends State<CopyTradeOil> {
   // static const maxSeconds = 180;
   Timer timer;
   final int maxTime = 
-120;
+420;
   RxInt seconds = 
-120.obs;
+420.obs;
   RxBool isRunning = false.obs;
   double profit = 0;
 
@@ -185,7 +185,7 @@ class _CopyTradeOilState extends State<CopyTradeOil> {
                                                   'rCrudeOil', true);
 
                                               DateTime endDateTime =
-                                                  DateTime.now().add(Duration(seconds: 120
+                                                  DateTime.now().add(Duration(seconds: 420
                                                   ));
 
                                               Timestamp endTime =

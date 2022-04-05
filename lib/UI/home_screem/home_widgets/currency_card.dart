@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:usdt_beta/Controller/admin_controller.dart';
@@ -80,6 +82,7 @@ class CurrencyCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15)),
                 color: color,
                 onPressed: () {
+                  log("ON TAP PRESSED");
                   onTap();
                 },
                 child: Text(
