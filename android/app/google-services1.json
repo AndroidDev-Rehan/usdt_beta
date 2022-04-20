@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:414593705257:android:9748e3ef8878d7f18c4338",
         "android_client_info": {
-          "package_name": "com.example.usdt_beta"
+          "package_name": "com.skrillabc.usdt_beta"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "414593705257-s1qlooofja3mh5vak7uomn52l3mint5p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.usdt_beta",
+            "package_name": "com.skrillabc.usdt_beta",
             "certificate_hash": "89fed03ba6bce9893a1a2453f0d9cfd7dfcbab5a"
           }
         },

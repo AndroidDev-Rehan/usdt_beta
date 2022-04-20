@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:usdt_beta/Model/newRefShown.dart';
+import 'package:usdt_beta/Model/referance_model.dart';
 import 'package:usdt_beta/Model/user_model.dart';
 import 'package:usdt_beta/Services/database.dart';
 import 'package:usdt_beta/UI/BottomNavBar/bottom_nav_bar.dart';
@@ -54,12 +55,13 @@ class UserController extends GetxController {
     super.onInit();
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
     user = await MyDatabase().getUser(firbaseUser.value.uid);
   }
 
-  void getUserById() async {
-    user = await MyDatabase().getUser(firbaseUser.value.uid);
+  Future<UserModel> getUserById(String id) async {
+   UserModel user1 = await MyDatabase().getUser(id);
+   return user1;
   }
 
 
@@ -187,6 +189,8 @@ class UserController extends GetxController {
         'rLiteCoin': userModel.rLiteCoin,
       }).then((value) => sendVerificationEmail());
 
+
+
       // DocumentReference docRef =
       //     firebaseFirestore.collection('user').doc(idController.text);
       // print('id :${firbaseUser.value.uid}');
@@ -283,6 +287,31 @@ class UserController extends GetxController {
     if (verifyUser.emailVerified) {
       timer.cancel();
       Get.to(VerificationPage());
+    }
+  }
+
+  Future<void> uploadReference(String value) async{
+
+    UserModel userModel = await getUserById(FirebaseAuth.instance.currentUser.uid);
+
+    ReferenceModelList temp;
+    if(userModel.refId != null && userModel.refId.isNotEmpty){
+      final doc = await FirebaseFirestore.instance.collection("References").doc(userModel.refId).get();
+      Map map = doc.data();
+      if(map == null){
+        temp = ReferenceModelList(list: []);
+      }
+      else {
+        temp = ReferenceModelList.fromMap(map);
+      }
+
+      temp.list.add(ReferanceModel(
+          userId: firbaseUser.value.uid,
+          userName: userModel.name,
+          value: value
+      ));
+
+      await FirebaseFirestore.instance.collection("References").doc(userModel.refId).set(temp.toMap());
     }
   }
 

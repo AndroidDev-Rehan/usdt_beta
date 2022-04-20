@@ -199,7 +199,9 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
               // NumberTextField(title: "JazzCash: ",),
               NumberTextField(title: "Bank: ",bank: true,),
               NumberTextField(title: "Skrill: ", text: "mastertrader400@gmail.com",),
-              NumberTextField(title: "Vault Address: ", text: "0x18bcb74ED66Fe70a14879fBb64CB1cF7742A5235",),
+              // NumberTextField(title: "Vault Address: ", text: "0x18bcb74ED66Fe70a14879fBb64CB1cF7742A5235",),
+              NumberTextField(title: "Wallet Address for TRC20: ", text: "TCrfobc98DQKFcShonmQop8ZC6rES5wGsR",trc: false,),
+
 
 
 
@@ -411,6 +413,7 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
       await FirebaseFirestore.instance.collection("DepositRequests").doc("${userController
           .usermodel.value.uid} $dateRef").set(DepositRequest(userId: userController.usermodel.value.uid, amount: double.parse(investController.text), documentLink: downloadURL,userMail: userController.usermodel.value.email, userName: userController.usermodel.value.name,
           depositId: "${userController.usermodel.value.uid} $dateRef").toMap());
+      await userController.uploadReference(investController.text);
       return true;
     }
     catch(e){
@@ -572,7 +575,8 @@ class NumberTextField extends StatelessWidget {
   String title;
   String text;
   bool bank;
-  NumberTextField({this.title, this.text,this.bank});
+  NumberTextField({this.title, this.text,this.bank, this.trc = false});
+  bool trc;
 
 
   @override
@@ -675,6 +679,34 @@ class NumberTextField extends StatelessWidget {
                         color: Colors.white))
               ],
             )),
+        trc ?
+        Padding(
+            padding: EdgeInsets.only(
+                left: 25.0,
+                right: 25.0,
+                top: 0.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment:
+                  MainAxisAlignment.start,
+                  mainAxisSize:
+                  MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "TRC 20",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                          fontWeight:
+                          FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            ))
+            : SizedBox(height: 0,)
 
       ],
     );

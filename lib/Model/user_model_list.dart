@@ -27,4 +27,16 @@ class ReferenceModelList {
       list: secondList,
     );
   }
+
+  toMap(){
+    List<Map> mapsList = [];
+
+    for (int i = 0; i<list.length; i++){
+      mapsList.add(list[i].toMap());
+    }
+
+    return {
+      "reference": mapsList
+    };
+  }
 }
